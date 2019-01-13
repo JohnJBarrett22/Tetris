@@ -42,7 +42,12 @@ const pieces = [
     [J, "orange"]
 ];
 
-let p = new Piece(pieces[0][0], pieces[0][1]);
+function randomPiece(){
+    let r = randomN = Math.floor(Math.random() * pieces.length);
+    return new Piece(pieces[r][0], pieces[r][1]);
+}
+
+let p = randomPiece();
 
 function Piece(tetromino, color){
     this.tetromino = tetromino;
@@ -78,8 +83,10 @@ Piece.prototype.moveDown = function(){
         this.unDraw();
         this.y++;
         this.draw();
+    }else{
+        this.lock();
+        p = randomPiece();
     }
-
 }
 
 Piece.prototype.moveRight = function(){
@@ -88,7 +95,6 @@ Piece.prototype.moveRight = function(){
         this.x++;
         this.draw();
     }
-
 }
 
 Piece.prototype.moveLeft = function(){
@@ -97,18 +103,41 @@ Piece.prototype.moveLeft = function(){
         this.x--;
         this.draw();
     }
-
 }
 
 Piece.prototype.rotate = function(){
     let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
-    if(!this.collision(0, 1, nextPattern)){
+    let shift = 0;
+    if(this.collision(0, 0, nextPattern)){
+        if(this.x > col/2){
+            shift = -1;
+        }else{
+            shift = 1;
+        }
+    }
+    if(!this.collision(shift, 0, nextPattern)){
         this.unDraw();
+        this.x += shift;
         this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
         this.activeTetromino = this.tetromino[this.tetrominoN];
         this.draw();
     }
+}
 
+Piece.prototype.lock = function(){
+    for(r = 0; r < this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            if(!this.activeTetromino[r][c]){
+                continue;
+            }
+            if(this.y + r < 0){
+                alert("Game Over");
+                gameOver = true;
+                break;
+            }
+            board[this.y + r][this.x + c] = this.color;
+        }
+    }
 }
 
 Piece.prototype.collision = function(x, y, piece){
@@ -149,6 +178,7 @@ function control(event){
 }
 
 let dropStart = Date.now();
+let gameOver = false;
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
@@ -156,7 +186,9 @@ function drop(){
         p.moveDown();
         dropStart = Date.now();
     }
-    requestAnimationFrame(drop);
+    if(!gameOver){
+        requestAnimationFrame(drop);
+    }
 }
 
 p.draw();
