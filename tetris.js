@@ -55,30 +55,61 @@ function Piece(tetromino, color){
     this.y = 0;
 }
 
-Piece.prototype.draw = function(){
+Piece.prototype.fill = function(color){
     for(r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
             if(this.activeTetromino[r][c]){
-                drawSquare(this.x + c, this.y + r, this.color);
+                drawSquare(this.x + c, this.y + r, color);
             }
         }
     }
 }
 
+Piece.prototype.draw = function(){
+    this.fill(this.color);
+}
+
 Piece.prototype.unDraw = function(){
-    for(r = 0; r < this.activeTetromino.length; r++){
-        for(c = 0; c < this.activeTetromino.length; c++){
-            if(this.activeTetromino[r][c]){
-                drawSquare(this.x + c, this.y + r, vacant);
-            }
-        }
-    }
+    this.fill(vacant);
 }
 
 Piece.prototype.moveDown = function(){
     this.unDraw();
     this.y++;
     this.draw();
+}
+
+Piece.prototype.moveRight = function(){
+    this.unDraw();
+    this.x++;
+    this.draw();
+}
+
+Piece.prototype.moveLeft = function(){
+    this.unDraw();
+    this.x--;
+    this.draw();
+}
+
+Piece.prototype.rotate = function(){
+    this.unDraw();
+    this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length;
+    this.activeTetromino = this.tetromino[this.tetrominoN];
+    this.draw();
+}
+
+document.addEventListener("keydown", control);
+
+function control(event){
+    if(event.keyCode == 37){
+        p.moveLeft();
+    }else if(event.keyCode == 38){
+        p.rotate();
+    }else if(event.keyCode == 39){
+        p.moveRight();
+    }else if(event.keyCode == 40){
+        p.moveDown()
+    }
 }
 
 let dropStart = Date.now();
