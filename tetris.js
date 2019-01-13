@@ -6,6 +6,9 @@ const col = column = 10;
 const sq = squareSize = 20;
 const vacant = "white";
 
+const scoreElement = document.getElementById("score");
+let score = 0;
+
 function drawSquare(x, y, color){
     ctx.fillStyle = color;
     ctx.fillRect(x*sq, y*sq, sq, sq);
@@ -138,6 +141,25 @@ Piece.prototype.lock = function(){
             board[this.y + r][this.x + c] = this.color;
         }
     }
+    for(r = 0; r < row; r++){
+        let isRowFull = true;
+        for(c = 0; c < col; c++){
+            isRowFull = isRowFull && (board[r][c] != vacant);
+        }
+        if(isRowFull){
+            for(y = r; y > 1; y--){
+                for(c = 0; c < col; c++){
+                    board[y][c] = board[y-1][c];
+                }
+            }
+            for(c = 0; c < col; c++){
+                board[0][c] = vacant;
+            }
+            score +=10;
+        }
+    }
+    drawBoard();
+    scoreElement.innerHTML = score;
 }
 
 Piece.prototype.collision = function(x, y, piece){
