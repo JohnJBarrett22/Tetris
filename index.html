@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <style>
-        #score {
-            display: inline-block;
-        }
-        div {
-            font-size: 25px;
-            font-weight: bold;
-            font-family: monospace;
-        }
-    </style>
+    <link rel ="stylesheet" href="style.css">
     <title>Tetris</title>
 </head>
 <body>
+    <iframe src="audio/tetris.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+    <!-- <video autoplay muted loop id="myVideo">
+        <source src="particles.mp4" type="video/mp4">
+    </video> -->
     <canvas id="tetris" width="200" height="400"></canvas>
     <div>
         Score: <div id="score">0</div>

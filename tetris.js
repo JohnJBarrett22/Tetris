@@ -9,6 +9,17 @@ const vacant = "white";
 const scoreElement = document.getElementById("score");
 let score = 0;
 
+let dead = new Audio();
+dead.src = "audio/dead.mp3";
+let down = new Audio();
+down.src = "audio/down.mp3";
+let left = new Audio();
+left.src = "audio/left.mp3";
+let right = new Audio();
+right.src = "audio/right.mp3";
+let rotate = new Audio();
+rotate.src = "audio/rotate.mp3";
+
 function drawSquare(x, y, color){
     ctx.fillStyle = color;
     ctx.fillRect(x*sq, y*sq, sq, sq);
@@ -60,7 +71,7 @@ function Piece(tetromino, color){
     this.activeTetromino = this.tetromino[this.tetrominoN];
 
     this.x = 3;
-    this.y = 0;
+    this.y = -1;
 }
 
 Piece.prototype.fill = function(color){
@@ -156,6 +167,7 @@ Piece.prototype.lock = function(){
                 board[0][c] = vacant;
             }
             score +=10;
+            down.play();
         }
     }
     drawBoard();
@@ -213,5 +225,4 @@ function drop(){
     }
 }
 
-p.draw();
 drop();
