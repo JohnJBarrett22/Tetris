@@ -16,13 +16,17 @@ canvas {
     margin-right: auto;
     display: block;
     width: 300px;
+    z-index: 999;
 }
 div {
     font-size: 25px;
     font-weight: bold;
     font-family: monospace;
     text-align: center;
+    color: white;
 }
 body {
-    background-color: blue;
+    background-image: url("https://media.giphy.com/media/ZCzvUG0JtNRmM/giphy.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
